@@ -6,7 +6,7 @@ const router = Router()
 
 router.get('/user', async (req, res) => {
 
-    const {rows} = await pool.query('SELECT * FROM users')
+    const {rows} = await pool.query('SELECT * FROM users WHERE id = 1')
     res.json(rows);    
 })
 
