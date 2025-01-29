@@ -3,3 +3,26 @@
 --     name VARCHAR(255) NOT NULL,
 --     email VARCHAR(255) NOT NULL UNIQUE,
 -- );
+
+-- Crear la tabla de Menús
+--CREATE TABLE menus (
+--    id SERIAL PRIMARY KEY,
+--    name VARCHAR(255) NOT NULL,
+--    description TEXT NOT NULL
+--);
+--
+---- Crear la tabla de Platos (Dishes)
+--CREATE TABLE dishes (
+--    id SERIAL PRIMARY KEY,
+--    menu_id INTEGER REFERENCES menus(id) ON DELETE CASCADE,
+--    name VARCHAR(255) NOT NULL,
+--    description TEXT NOT NULL
+--);
+--
+---- Crear la tabla de Postres (Desserts)
+--CREATE TABLE desserts (
+--    id SERIAL PRIMARY KEY,
+--    dish_id INTEGER REFERENCES dishes(id) ON DELETE CASCADE,
+--    name VARCHAR(255) NOT NULL,
+--    description TEXT NOT NULL
+--);
