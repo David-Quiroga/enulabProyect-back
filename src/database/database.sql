@@ -14,7 +14,7 @@
 --
 
 -- Crear la tabla de Platos (Dishes)
---EATE TABLE dishes (
+--CREATE TABLE dishes (
 --  id SERIAL PRIMARY KEY,
 --	 menu_id INT REFERENCES menus(id) ON DELETE CASCADE,  -- Relaciona la bebida con un menú específico
 --name VARCHAR(255) NOT NULL,      -- Nombre de la bebida
@@ -23,7 +23,7 @@
 --
 --
 -- Crear la tabla de Postres (Desserts)
---EATE TABLE desserts (
+--CREATE TABLE desserts (
 --  id SERIAL PRIMARY KEY,
 --	menu_id INT REFERENCES menus(id) ON DELETE CASCADE,  -- Relaciona la bebida con un menú específico
 --name VARCHAR(255) NOT NULL,      -- Nombre de la bebida
@@ -31,7 +31,7 @@
 --price DECIMAL(10, 2) NOT NULL    -- Precio de la bebida
 --
 --
---EATE TABLE drinks (
+--CREATE TABLE drinks (
 --id SERIAL PRIMARY KEY,           -- ID único para cada bebida
 --menu_id INT REFERENCES menus(id) ON DELETE CASCADE,  -- Relaciona la bebida con un menú específico
 --name VARCHAR(255) NOT NULL,      -- Nombre de la bebida
