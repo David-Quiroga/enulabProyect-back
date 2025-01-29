@@ -12,6 +12,7 @@ const getDrinksByMenuId = async (req, res) => {
 
 // Crear una nueva bebida
 const createDrink = async (req, res) => {
+    
   const { name, description, price } = req.body;
   try {
     const newDrink = await drinkModel.createDrink(req.params.menuId, name, description, price);

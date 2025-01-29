@@ -17,7 +17,8 @@ const createDish = async (req, res) => {
     const newDish = await dishesModel.createDish(req.params.menuId, name, description, price);
     res.status(201).json(newDish);
   } catch (err) {
-    res.status(500).send('Error al crear el plato');
+    res.status(500).sen
+    console.error(err);('Error al crear el plato');
   }
 };
 

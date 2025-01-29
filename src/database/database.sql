@@ -4,6 +4,7 @@
 --     email VARCHAR(255) NOT NULL UNIQUE,
 -- );
 
+
 -- Crear la tabla de Menús
 --CREATE TABLE menus (
 --    id SERIAL PRIMARY KEY,
@@ -11,18 +12,29 @@
 --    description TEXT NOT NULL
 --);
 --
----- Crear la tabla de Platos (Dishes)
---CREATE TABLE dishes (
---    id SERIAL PRIMARY KEY,
---    menu_id INTEGER REFERENCES menus(id) ON DELETE CASCADE,
---    name VARCHAR(255) NOT NULL,
---    description TEXT NOT NULL
---);
+
+-- Crear la tabla de Platos (Dishes)
+--EATE TABLE dishes (
+--  id SERIAL PRIMARY KEY,
+--	 menu_id INT REFERENCES menus(id) ON DELETE CASCADE,  -- Relaciona la bebida con un menú específico
+--name VARCHAR(255) NOT NULL,      -- Nombre de la bebida
+--description TEXT,                -- Descripción de la bebida
+--price DECIMAL(10, 2) NOT NULL    -- Precio de la bebida
 --
----- Crear la tabla de Postres (Desserts)
---CREATE TABLE desserts (
---    id SERIAL PRIMARY KEY,
---    dish_id INTEGER REFERENCES dishes(id) ON DELETE CASCADE,
---    name VARCHAR(255) NOT NULL,
---    description TEXT NOT NULL
---);
+--
+-- Crear la tabla de Postres (Desserts)
+--EATE TABLE desserts (
+--  id SERIAL PRIMARY KEY,
+--	menu_id INT REFERENCES menus(id) ON DELETE CASCADE,  -- Relaciona la bebida con un menú específico
+--name VARCHAR(255) NOT NULL,      -- Nombre de la bebida
+--description TEXT,                -- Descripción de la bebida
+--price DECIMAL(10, 2) NOT NULL    -- Precio de la bebida
+--
+--
+--EATE TABLE drinks (
+--id SERIAL PRIMARY KEY,           -- ID único para cada bebida
+--menu_id INT REFERENCES menus(id) ON DELETE CASCADE,  -- Relaciona la bebida con un menú específico
+--name VARCHAR(255) NOT NULL,      -- Nombre de la bebida
+--description TEXT,                -- Descripción de la bebida
+--price DECIMAL(10, 2) NOT NULL    -- Precio de la bebida
+--
