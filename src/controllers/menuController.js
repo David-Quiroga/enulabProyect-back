@@ -36,8 +36,45 @@ const createMenu = async (req, res) => {
   }
 };
 
+// Actualizar un menú por ID
+const updateMenu = async (req, res) => {
+  const { id } = req.params;
+  const { name, description } = req.body;
+
+  try {
+    const updatedMenu = await menuModel.updateMenu(id, name, description);
+    if (updatedMenu) {
+      res.json(updatedMenu);
+    } else {
+      res.status(404).send('Menú no encontrado');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error al actualizar el menú');
+  }
+};
+
+// Eliminar un menú por ID
+const deleteMenu = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedMenu = await menuModel.deleteMenu(id);
+    if (deletedMenu) {
+      res.json({ message: 'Menú eliminado exitosamente', deletedMenu });
+    } else {
+      res.status(404).send('Menú no encontrado');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error al eliminar el menú');
+  }
+};
+
 export const menuController = {
   getAllMenus,
   getMenuById,
   createMenu,
+  updateMenu,  
+  deleteMenu   
 };

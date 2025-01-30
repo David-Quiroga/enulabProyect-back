@@ -19,8 +19,25 @@ const createMenu = async (name, description) => {
     return rows[0];
   };
 
+  // Actualizar un menú por ID
+const updateMenu = async (id, name, description) => {
+  const query = "UPDATE menus SET name = $1, description = $2 WHERE id = $3 RETURNING *";
+  const { rows } = await pool.query(query, [name, description, id]);
+  return rows[0];
+};
+
+// Eliminar un menú por ID
+const deleteMenu = async (id) => {
+  const query = "DELETE FROM menus WHERE id = $1 RETURNING *";
+  const { rows } = await pool.query(query, [id]);
+  return rows[0]; // Devuelve el menú eliminado si existía
+};
+
+
   export const menuModel = {
     findAllMenus,
     findMenuById,
     createMenu,
+    updateMenu, 
+    deleteMenu 
   };

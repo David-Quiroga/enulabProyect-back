@@ -26,3 +26,43 @@
 --    name VARCHAR(255) NOT NULL,
 --    description TEXT NOT NULL
 --);
+-- Crea la tabla de restaurante (restaurant)
+/* CREATE TABLE restaurant (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    ubicacion VARCHAR(255),
+    objetivos TEXT,
+    logo VARCHAR(500),
+    descripcion TEXT
+);
+-- Crea la tabla empleados (employee)
+CREATE TABLE employee (
+    id SERIAL PRIMARY KEY,
+    restaurant_id INTEGER REFERENCES restaurant(id) ON DELETE CASCADE,
+    name VARCHAR(200) NOT NULL,
+    cedula VARCHAR(10) UNIQUE NOT NULL,
+    edad INTEGER, 
+    genero VARCHAR(20), 
+    sueldo DECIMAL(10,2),
+    telefono VARCHAR(15),
+    horario VARCHAR(100)
+);
+-- Crea la tabla inventario (inventory)
+CREATE TABLE inventory (
+    id SERIAL PRIMARY KEY,
+    restaurant_id INTEGER REFERENCES restaurant(id) ON DELETE CASCADE, 
+    nombreProductos VARCHAR(100),
+    estado BOOLEAN,
+    cantidad INTEGER,
+    categoria VARCHAR(20),
+    descripcion TEXT
+);
+-- Crea la tabla usuarios (users)
+CREATE TABLE users (
+	id SERIAL PRIMARY KEY,
+	nombreCompleto VARCHAR(100),
+	correoElectronico VARCHAR(100) UNIQUE,
+	password VARCHAR(10),
+	ruc VARCHAR(10),
+	contacto VARCHAR(10)
+) */

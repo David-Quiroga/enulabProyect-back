@@ -1,12 +1,8 @@
-//* Ruta de prueba
-import { Router } from 'express'
-import { createUser, deleteUser, getUser, getUserByID, updateUser } from '../controllers/userController.js'
+import express from 'express';
+import { userController } from '../controllers/userController.js';
 
-const router = Router()
+const router = express.Router();
 
-router.get('/user', getUser)
-router.get('/user/:id', getUserByID)
-router.post('/user', createUser)
-router.delete('/user/:id', deleteUser)
-router.put('/user/:id', updateUser)
-export default router;
+router.post('/usuarios', userController.createUser)
+
+export default router
