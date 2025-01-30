@@ -22,8 +22,56 @@ const createDish = async (req, res) => {
   }
 };
 
-export const dishController = {
-  getDishesByMenuId,
-  createDish,
+// Obtener un plato por ID
+const getDishById = async (req, res) => {
+  try {
+    const { menuId, id } = req.params;
+    const dish = await dishesModel.findDishById(menuId, id);
+    if (dish) {
+      res.json(dish);
+    } else {
+      res.status(404).send("Plato no encontrado");
+    }
+  } catch (err) {
+    res.status(500).send("Error al obtener el plato");
+  }
 };
 
+// Actualizar un plato
+const updateDish = async (req, res) => {
+  try {
+    const { menuId, id } = req.params;
+    const { name, description, price } = req.body;
+    const updatedDish = await dishesModel.updateDish(menuId, id, name, description, price);
+    if (updatedDish) {
+      res.json(updatedDish);
+    } else {
+      res.status(404).send("Plato no encontrado");
+    }
+  } catch (err) {
+    res.status(500).send("Error al actualizar el plato");
+  }
+};
+
+// Eliminar un plato
+const deleteDish = async (req, res) => {
+  try {
+    const { menuId, id } = req.params;
+    const deletedDish = await dishesModel.deleteDish(menuId, id);
+    if (deletedDish) {
+      res.json({ message: "Plato eliminado correctamente", deletedDish });
+    } else {
+      res.status(404).send("Plato no encontrado");
+    }
+  } catch (err) {
+    res.status(500).send("Error al eliminar el plato");
+  }
+};
+
+export const dishController = {
+  getDishesByMenuId,
+  getDishById,
+  createDish,
+  updateDish,
+  deleteDish,
+};

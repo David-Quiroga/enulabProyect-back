@@ -13,7 +13,30 @@ const createDish = async (menuId, name, description, price) => {
   return rows[0];
 };
 
+// Obtener un plato por su ID
+const findDishById = async (menuId, id) => {
+  const { rows } = await pool.query("SELECT * FROM dishes WHERE menu_id = $1 AND id = $2", [menuId, id]);
+  return rows[0];
+};
+
+// Actualizar un plato
+const updateDish = async (menuId, id, name, description, price) => {
+  const query = "UPDATE dishes SET name = $1, description = $2, price = $3 WHERE menu_id = $4 AND id = $5 RETURNING *";
+  const { rows } = await pool.query(query, [name, description, price, menuId, id]);
+  return rows[0];
+};
+
+// Eliminar un plato
+const deleteDish = async (menuId, id) => {
+  const query = "DELETE FROM dishes WHERE menu_id = $1 AND id = $2 RETURNING *";
+  const { rows } = await pool.query(query, [menuId, id]);
+  return rows[0]; // Retornamos el plato eliminado para confirmación
+};
+
 export const dishesModel = {
   findDishesByMenuId,
+  findDishById,
   createDish,
+  updateDish,
+  deleteDish,
 };
