@@ -1,7 +1,6 @@
 import express from 'express';
 import { dessertController } from '../controllers/dessertController.js';
 
-
 const router = express.Router();
 
 // Rutas para Postres

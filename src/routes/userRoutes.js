@@ -1,29 +1,8 @@
-//! son de prueba
-import { Router } from 'express'
-import { pool } from '../db.js'
+import express from 'express';
+import { userController } from '../controllers/userController.js';
 
-const router = Router()
+const router = express.Router();
 
-router.get('/user', async (req, res) => {
+router.post('/usuarios', userController.createUser)
 
-    const {rows} = await pool.query('SELECT * FROM users')
-    res.json(rows);    
-})
-
-router.get('/user/:id', (req, res) => {
-    const { id } = req.params
-    res.send('Holap', + id)
-})
-
-router.post('/user', (req, res) => {
-    res.send('Crea un usuario')
-})
-
-router.delete('/user/:id', (req, res) => {
-    res.send('Holap')
-})
-
-router.put('/user/:id', (req, res) => {
-    res.send('Holap')
-})
-export default router;
+export default router
