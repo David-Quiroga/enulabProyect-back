@@ -81,4 +81,15 @@ CREATE TABLE suppliers (
 
 );
 
+-- Crea la tabla de tipo de comida
+
+CREATE TABLE food_type (
+    id SERIAL PRIMARY KEY,
+     menu_id INTEGER REFERENCES menus(id) ON DELETE CASCADE,
+    name_type VARCHAR(255) ,
+    state BOOLEAN NOT NULL DEFAULT TRUE,
+    descripcion VARCHAR(255)
+);
+
+
 ) */

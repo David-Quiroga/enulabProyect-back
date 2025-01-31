@@ -9,8 +9,10 @@ import employeeRoutes from './routes/employeeRoutes.js'
 import inventoryRoutes from './routes/inventoryRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import supplierRoutes from './routes/supplierRoutes.js'
+import food_typeRoutes from './routes/food_typeRoutes.js'
 import listEndpoints from 'express-list-endpoints'; //!Se usa para ver los endpoints
 import morgan from 'morgan';
+
 
 const app = express();
 
@@ -27,6 +29,7 @@ app.use('/api', employeeRoutes)
 app.use('/api', inventoryRoutes)
 app.use('/api', userRoutes)
 app.use('/api', supplierRoutes)
+app.use('/api', food_typeRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`);
