@@ -20,7 +20,7 @@ const findRestaurantByid = async (req, res) => {
             res.status(404).send('Restaurante no encontrado')
         }
     } catch (error) {
-        res.status(500).send('Error al obtener el menú')
+        res.status(500).send('Error al obtener el restaurante')
     }
 };
 
@@ -32,7 +32,7 @@ const createRestaurante = async (req, res) => {
         res.status(201).json(newRestaurant)
     } catch (error) {
         console.error(error); 
-        res.status(500).send('Error al crear el menú');
+        res.status(500).send('Error al crear el restaurante');
     }
 }
 

@@ -8,6 +8,7 @@ import restaurantRoutes from './routes/restaurantRoutes.js'
 import employeeRoutes from './routes/employeeRoutes.js'
 import inventoryRoutes from './routes/inventoryRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import supplierRoutes from './routes/supplierRoutes.js'
 import listEndpoints from 'express-list-endpoints'; //!Se usa para ver los endpoints
 import morgan from 'morgan';
 
@@ -25,6 +26,7 @@ app.use('/api', restaurantRoutes);
 app.use('/api', employeeRoutes)
 app.use('/api', inventoryRoutes)
 app.use('/api', userRoutes)
+app.use('/api', supplierRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`);
