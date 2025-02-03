@@ -10,6 +10,8 @@ import inventoryRoutes from './routes/inventoryRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import supplierRoutes from './routes/supplierRoutes.js'
 import food_typeRoutes from './routes/food_typeRoutes.js'
+import reserveRoutes from './routes/reserveRouter.js'
+import commentRoutes from './routes/commentRoutes.js'
 import listEndpoints from 'express-list-endpoints'; //!Se usa para ver los endpoints
 import morgan from 'morgan';
 
@@ -30,6 +32,8 @@ app.use('/api', inventoryRoutes)
 app.use('/api', userRoutes)
 app.use('/api', supplierRoutes)
 app.use('/api', food_typeRoutes)
+app.use('/api', reserveRoutes)
+app.use('/api', commentRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`);

@@ -91,5 +91,22 @@ CREATE TABLE food_type (
     descripcion VARCHAR(255)
 );
 
+-- Crea la tabla de reserva
+CREATE TABLE reserve(
+	id SERIAL PRIMARY KEY,
+	restaurant_id INTEGER REFERENCES restaurant(id) ON DELETE CASCADE,
+	name VARCHAR (200) NOT NULL,
+	date TIMESTAMP,
+	people INTEGER,
+	comments TEXT	
+)
+-- Create the Comment table
+CREATE TABLE comment (
+    comment_id SERIAL PRIMARY KEY,
+    restaurant_id INTEGER REFERENCES restaurant(id) ON DELETE CASCADE,
+    rating VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+    content TEXT
+);
 
-) */
+*/
