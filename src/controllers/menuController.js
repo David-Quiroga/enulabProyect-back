@@ -24,15 +24,40 @@ const getMenuById = async (req, res) => {
   }
 };
 
+
+// Obtener menús de un restaurante específico // es solo para provar si los menus pertecen a un restaurante no borrar
+const getMenusByRestaurant = async (req, res) => {
+  try {
+      const menus = await menuModel.findMenusByRestaurant(req.params.restaurant_id);
+      res.json(menus);
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Error al obtener los menús');
+  }
+};
+
+
+// Crear un nuevo menú
+//const createMenu = async (req, res) => {
+//  const { name, description } = req.body;
+//  try {
+//    const newMenu = await menuModel.createMenu(name, description);
+//    res.status(201).json(newMenu);
+//  } catch (err) {
+//    console.error(err); 
+//    res.status(500).send('Error al crear el menú');
+//  }
+//};
+
 // Crear un nuevo menú
 const createMenu = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, restaurant_id } = req.body;
   try {
-    const newMenu = await menuModel.createMenu(name, description);
-    res.status(201).json(newMenu);
+      const newMenu = await menuModel.createMenu(name, description, restaurant_id);
+      res.status(201).json(newMenu);
   } catch (err) {
-    console.error(err); 
-    res.status(500).send('Error al crear el menú');
+      console.error(err); 
+      res.status(500).send('Error al crear el menú');
   }
 };
 
@@ -75,6 +100,7 @@ export const menuController = {
   getAllMenus,
   getMenuById,
   createMenu,
-  updateMenu,  
-  deleteMenu   
+  updateMenu,
+  deleteMenu,
+  getMenusByRestaurant 
 };

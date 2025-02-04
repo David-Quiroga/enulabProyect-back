@@ -3,13 +3,14 @@
 --     name VARCHAR(255) NOT NULL,
 --     email VARCHAR(255) NOT NULL UNIQUE,
 -- );
-
--- Crear la tabla de Menús
---CREATE TABLE menus (
---    id SERIAL PRIMARY KEY,
---    name VARCHAR(255) NOT NULL,
---    description TEXT NOT NULL
---);
+/*
+CREATE TABLE menus (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    restaurant_id INTEGER REFERENCES restaurant(id) ON DELETE CASCADE
+);
+*/
 --
 ---- Crear la tabla de Platos (Dishes)
 --CREATE TABLE dishes (
