@@ -1,19 +1,15 @@
 import { userModel } from '../models/userModel.js';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-
-const secret = process.env.JWT_SECRET || 'tu_clave_secreta';
 
 // Crear un nuevo usuario
 const createUser = async (req, res) => {
-    const { nombreCompleto, correoElectronico, password, ruc, contacto } = req.body;
+    const { nombreCompleto, correoelectronico, password, ruc, contacto } = req.body;
 
-    if (!nombreCompleto || !correoElectronico || !password || !ruc || !contacto) {
+    if (!nombreCompleto || !correoelectronico || !password || !ruc || !contacto) {
         return res.status(400).json({ message: 'Todos los campos son requeridos.' });
     }
 
     try {
-        const newUser = await userModel.createUser(nombreCompleto, correoElectronico, password, ruc, contacto);
+        const newUser = await userModel.createUser(nombreCompleto, correoelectronico, password, ruc, contacto);
         res.status(201).json({
             message: 'Usuario creado exitosamente',
             user: newUser,
@@ -24,31 +20,21 @@ const createUser = async (req, res) => {
     }
 };
 
-// Iniciar sesión
+// Iniciar sesión sin hash
 const login = async (req, res) => {
-    const { correoElectronico, password } = req.body;
+    const { correoelectronico, password } = req.body;
 
-    if (!correoElectronico || !password) {
+    if (!correoelectronico || !password) {
         return res.status(400).json({ message: 'Correo electrónico y contraseña son requeridos.' });
     }
 
     try {
-        const user = await userModel.findUserByEmail(correoElectronico);
-        if (!user) {
+        const user = await userModel.findUserByEmail(correoelectronico);
+        if (!user || user.password !== password) {
             return res.status(400).json({ message: 'Credenciales incorrectas' });
         }
 
-        const validPassword = await bcrypt.compare(password, user.password);
-        if (!validPassword) {
-            return res.status(400).json({ message: 'Credenciales incorrectas' });
-        }
-
-        // Crear un token JWT
-        const token = jwt.sign({ id: user.id, correoElectronico: user.correoElectronico }, secret, { expiresIn: '1h' });
-        res.status(200).json({
-            message: 'Inicio de sesión exitoso',
-            token,
-        });
+        res.status(200).json({ message: 'Inicio de sesión exitoso', user });
     } catch (error) {
         console.error('Error en el inicio de sesión:', error);
         res.status(500).json({ message: 'Error en el inicio de sesión' });
@@ -57,14 +43,14 @@ const login = async (req, res) => {
 
 // Validar si el correo existe
 const validateEmail = async (req, res) => {
-    const { correoElectronico } = req.body;
+    const { correoelectronico } = req.body;
 
-    if (!correoElectronico) {
+    if (!correoelectronico) {
         return res.status(400).json({ message: 'El correo electrónico es requerido.' });
     }
 
     try {
-        const user = await userModel.findUserByEmail(correoElectronico);
+        const user = await userModel.findUserByEmail(correoelectronico);
         if (user) {
             return res.status(200).json({ message: 'El correo existe en la base de datos.' });
         } else {
