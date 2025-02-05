@@ -1,4 +1,10 @@
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import path from 'path';
 import { restaurantModel } from "../models/restuarantModel.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //! Encuentra todos los restaurantes
 const findRestaurant = async (req, res) => {
@@ -26,15 +32,46 @@ const findRestaurantByid = async (req, res) => {
 
 //! Crear un nuevo restaurante
 const createRestaurante = async (req, res) => {
-    const { name, ubicacion, objetivos, logo, descripcion } = req.body;
+    const { name, ubicacion, objetivos, descripcion } = req.body;
+    let logo = null;
+
+    if (req.files && req.files.logo) {
+        const imageFile = req.files.logo; // Corrección de la variable
+        const uploadDir = path.join(__dirname, '../public/img/usuario');
+
+        // Verifica que el directorio exista, si no, créalo
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        const sanitizedFileName = imageFile.name.replace(/\s+/g, '_').toLowerCase();
+        const filePath = path.join(uploadDir, sanitizedFileName);
+        logo = sanitizedFileName;
+
+
+        try {
+            await imageFile.mv(filePath); // Mover la imagen al servidor
+            console.log(filePath)
+        } catch (err) {
+            console.log(err);
+            return res.status(500).send('Error al guardar la imagen');
+        }
+    }
+
     try {
-        const newRestaurant = await restaurantModel.createRestaurante(name, ubicacion, objetivos, logo, descripcion)
-        res.status(201).json(newRestaurant)
+        const newRestaurant = await restaurantModel.createRestaurante(name, ubicacion, objetivos, logo, descripcion);
+        res.status(201).json({
+            name,
+            ubicacion,
+            objetivos,
+            logo: `http://localhost:${3000}/img/usuario/${logo}`,
+            descripcion
+        });
     } catch (error) {
-        console.error(error); 
+        console.error(error);
         res.status(500).send('Error al crear el restaurante');
     }
-}
+};
 
 //! Actualizar el restaurante por id
 const updateRestaurante = async(req, res) => {

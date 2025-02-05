@@ -3,6 +3,8 @@ import { userController } from '../controllers/userController.js';
 
 const router = express.Router();
 
-router.post('/usuarios', userController.createUser)
+router.post('/register', userController.createUser); // Registro
+router.post('/login', userController.login); // Login
+router.post('/validate-email', userController.validateEmail); // Validación de correo
 
-export default router
+export default router;

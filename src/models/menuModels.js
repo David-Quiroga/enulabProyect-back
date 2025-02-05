@@ -16,6 +16,7 @@ const findMenusByRestaurant = async (restaurant_id) => {
   const { rows } = await pool.query("SELECT * FROM menus WHERE restaurant_id = $1", [restaurant_id]);
   return rows;
 };
+<<<<<<< HEAD
   
   // Crear un nuevo menú
 //const createMenu = async (name, description) => {
@@ -24,6 +25,8 @@ const findMenusByRestaurant = async (restaurant_id) => {
 // //   return rows[0];
  // };
 
+=======
+>>>>>>> david
   // Crear un nuevo menú asociado a un restaurante
 const createMenu = async (name, description, restaurant_id) => {
   const query = "INSERT INTO menus (name, description, restaurant_id) VALUES ($1, $2, $3) RETURNING *";

@@ -36,6 +36,7 @@ const getMenusByRestaurant = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 
 // Crear un nuevo menú
 //const createMenu = async (req, res) => {
@@ -49,6 +50,8 @@ const getMenusByRestaurant = async (req, res) => {
 //  }
 //};
 
+=======
+>>>>>>> david
 // Crear un nuevo menú
 const createMenu = async (req, res) => {
   const { name, description, restaurant_id } = req.body;

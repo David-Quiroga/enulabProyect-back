@@ -1,5 +1,12 @@
 import express from 'express';
+<<<<<<< HEAD
 import cors from 'cors';  // Importa el paquete cors
+=======
+import cors from 'cors';
+import fileUpload from 'express-fileupload';
+import path from 'path';
+import { fileURLToPath } from 'url';
+>>>>>>> david
 import { PORT } from './config.js';
 import menuRoutes from './routes/menuRoutes.js';
 import dishRoutes from './routes/dishesRoutes.js';
@@ -11,6 +18,7 @@ import inventoryRoutes from './routes/inventoryRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import supplierRoutes from './routes/supplierRoutes.js';
 import food_typeRoutes from './routes/food_typeRoutes.js';
+<<<<<<< HEAD
 import listEndpoints from 'express-list-endpoints'; //!Se usa para ver los endpoints
 import morgan from 'morgan';
 
@@ -22,9 +30,23 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],  // Permitir encabezados personalizados
 }));
+=======
+import reserveRoutes from './routes/reserveRouter.js';
+import commentRoutes from './routes/commentRoutes.js';
+import morgan from 'morgan';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+
+// Configura CORS para permitir solicitudes desde tu frontend
+app.use(cors());
+>>>>>>> david
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(fileUpload({ createParentPath: true }));
 
 // Rutas para las API
 app.use('/api', menuRoutes);
@@ -37,8 +59,18 @@ app.use('/api', inventoryRoutes);
 app.use('/api', userRoutes);
 app.use('/api', supplierRoutes);
 app.use('/api', food_typeRoutes);
+<<<<<<< HEAD
+=======
+app.use('/api', reserveRoutes);
+app.use('/api', commentRoutes);
+
+// Ruta para servir archivos estáticos (como imágenes)
+app.use('/img/usuario', express.static(path.join(__dirname, 'public/img/usuario')));
+
+// Ruta para archivos estáticos generales (como CSS, JS, imágenes)
+app.use(express.static(path.join(__dirname, 'public')));
+>>>>>>> david
 
 app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`);
-    console.log(listEndpoints(app)); //! Lista de las rutas
 });
