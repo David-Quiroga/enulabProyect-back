@@ -45,9 +45,12 @@ const login = async (req, res) => {
 
         // Crear un token JWT
         const token = jwt.sign({ id: user.id, correoElectronico: user.correoElectronico }, secret, { expiresIn: '1h' });
+
+        // Devolver el token y el user_id
         res.status(200).json({
             message: 'Inicio de sesión exitoso',
             token,
+            user_id: user.id, // Devolver el user_id
         });
     } catch (error) {
         console.error('Error en el inicio de sesión:', error);

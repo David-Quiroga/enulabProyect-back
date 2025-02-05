@@ -30,6 +30,7 @@
 /*
 CREATE TABLE restaurant (
     id SERIAL PRIMARY KEY,
+     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(200) NOT NULL,
     ubicacion VARCHAR(255),
     objetivos TEXT,
@@ -64,8 +65,8 @@ CREATE TABLE users (
 	nombreCompleto VARCHAR(100),
 	correoElectronico VARCHAR(100) UNIQUE,
 	password VARCHAR(10),
-	ruc VARCHAR(10),
-	contacto VARCHAR(10)
+	ruc VARCHAR(30),
+	contacto VARCHAR(30)
 	);
 
 -- Crea la tabla de proveedores

@@ -30,13 +30,12 @@ const findRestaurantByid = async (req, res) => {
     }
 };
 
-//! Crear un nuevo restaurante
 const createRestaurante = async (req, res) => {
-    const { name, ubicacion, objetivos, descripcion } = req.body;
+    const { name, ubicacion, objetivos, descripcion, user_id } = req.body; // Aquí se recibe el user_id
     let logo = null;
 
     if (req.files && req.files.logo) {
-        const imageFile = req.files.logo; // Corrección de la variable
+        const imageFile = req.files.logo;
         const uploadDir = path.join(__dirname, '../public/img/usuario');
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
@@ -45,27 +44,29 @@ const createRestaurante = async (req, res) => {
         const filePath = path.join(uploadDir, sanitizedFileName);
         logo = sanitizedFileName;
         try {
-            await imageFile.mv(filePath); // Mover la imagen al servidor
-            console.log(filePath)
+            await imageFile.mv(filePath);
         } catch (err) {
             console.log(err);
             return res.status(500).send('Error al guardar la imagen');
         }
     }
+    
     try {
-        const newRestaurant = await restaurantModel.createRestaurante(name, ubicacion, objetivos, logo, descripcion);
+        const newRestaurant = await restaurantModel.createRestaurante(name, ubicacion, objetivos, logo, descripcion, user_id); // Asegúrate de que el modelo soporte este campo
         res.status(201).json({
             name,
             ubicacion,
             objetivos,
             logo: `http://localhost:${3000}/img/usuario/${logo}`,
-            descripcion
+            descripcion,
+            user_id // Aquí también podrías devolver el user_id en la respuesta
         });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al crear el restaurante');
     }
 };
+
 
 //! Actualizar el restaurante por id
 const updateRestaurante = async (req, res) => {

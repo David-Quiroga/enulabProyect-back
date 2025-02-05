@@ -13,11 +13,12 @@ const findRestaurantByid = async(id) => {
 }
 
 //!Crear un restaurante
-const createRestaurante = async (name, ubicacion, objetivos, logo, descripcion) => {
-    const query = "INSERT INTO restaurant (name, ubicacion, objetivos, logo, descripcion) VALUES ($1, $2, $3, $4, $5) RETURNING *"
-    const { rows } = await pool.query(query, [ name, ubicacion, objetivos, logo, descripcion]);
-    return rows[0]
-}
+const createRestaurante = async (name, ubicacion, objetivos, logo, descripcion, user_id) => {
+    const query = "INSERT INTO restaurant (name, ubicacion, objetivos, logo, descripcion, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+    const { rows } = await pool.query(query, [name, ubicacion, objetivos, logo, descripcion, user_id]);
+    return rows[0];
+};
+
 
 //! Actualizar el restaurate por id
 const updateRestaurante = async (id, name, ubicacion, objetivos, logo, descripcion) => {

@@ -55,9 +55,10 @@ const createMenu = async (req, res) => {
       const newMenu = await menuModel.createMenu(name, description, restaurant_id);
       res.status(201).json(newMenu);
   } catch (err) {
-      console.error(err); 
-      res.status(500).send('Error al crear el menú');
+    console.error('Error detallado:', err); // Verás el error completo en la consola
+    res.status(500).json({ error: err.message }); // Enviará el mensaje de error a Postman
   }
+  
 };
 
 // Actualizar un menú por ID
