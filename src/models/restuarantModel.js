@@ -7,9 +7,9 @@ const findAllRestaurant = async () => {
 }
 
 //! Obtener el restaurante por id
-const findRestaurantByid = async(id) => {
-    const { rows } = await pool.query('SELECT * FROM restaurant WHERE id = $1', [id])
-    return rows[0];
+const findRestaurantByid = async(user_id) => {
+    const { rows } = await pool.query('SELECT * FROM restaurant WHERE user_id = $1', [user_id])
+    return rows;
 }
 
 //!Crear un restaurante
@@ -53,47 +53,3 @@ export const restaurantModel = {
     updateRestaurante,
     deleteRestaurante
 }
-/* 
-import { pool } from "../db.js";
-
-//! Obtener todos los restaurantes de un usuario
-const findAllRestaurant = async (userId) => {
-    const { rows } = await pool.query("SELECT * FROM restaurant WHERE user_id = $1", [userId]);
-    return rows;
-}
-
-//! Obtener el restaurante por id y verificar que pertenece al usuario
-const findRestaurantByid = async (id, userId) => {
-    const { rows } = await pool.query('SELECT * FROM restaurant WHERE id = $1 AND user_id = $2', [id, userId]);
-    return rows[0];
-}
-
-//! Crear un restaurante con userId
-const createRestaurante = async (name, ubicacion, objetivos, logo, descripcion, userId) => {
-    const query = "INSERT INTO restaurant (name, ubicacion, objetivos, logo, descripcion, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
-    const { rows } = await pool.query(query, [name, ubicacion, objetivos, logo, descripcion, userId]);
-    return rows[0];
-}
-
-//! Actualizar restaurante asegurando que el usuario es el dueño
-const updateRestaurante = async (id, name, ubicacion, objetivos, logo, descripcion, userId) => {
-    const query = "UPDATE restaurant SET name = $1, ubicacion = $2, objetivos = $3, logo = $4, descripcion = $5 WHERE id = $6 AND user_id = $7 RETURNING *";
-    const { rows } = await pool.query(query, [name, ubicacion, objetivos, logo, descripcion, id, userId]);
-    return rows[0];
-}
-
-//! Eliminar restaurante asegurando que el usuario es el dueño
-const deleteRestaurante = async (id, userId) => {
-    const query = "DELETE FROM restaurant WHERE id = $1 AND user_id = $2 RETURNING *";
-    const { rows } = await pool.query(query, [id, userId]);
-    return rows[0];
-}
-
-export const restaurantModel = {
-    findAllRestaurant,
-    findRestaurantByid,
-    createRestaurante,
-    updateRestaurante,
-    deleteRestaurante
-};
-*/

@@ -24,7 +24,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Configura CORS para permitir solicitudes desde tu frontend
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000'  // Frontend corriendo en el puerto 3000
+}));
 
 app.use(morgan('dev'));
 app.use(express.json());

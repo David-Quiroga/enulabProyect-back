@@ -16,19 +16,25 @@ const findRestaurant = async (req, res) => {
     }
 }
 
-//!Obtener un restautan especifico por id
-const findRestaurantByid = async (req, res) => {
+//! Obtener restaurantes por user_id
+const findRestaurantsByUserId = async (req, res) => {
+    const { user_id } = req.params; // Obtener el user_id desde los parámetros
+    if (!user_id) {
+        return res.status(400).send('No se ha encontrado el user_id. El usuario debe estar autenticado.');
+    }
     try {
-        const restaurante = await restaurantModel.findRestaurantByid(req.params.id)
-        if (restaurante){
-            res.json(restaurante)
+        const restaurantes = await restaurantModel.findRestaurantByid(user_id);
+        if (restaurantes.length > 0) {
+            res.json(restaurantes);
         } else {
-            res.status(404).send('Restaurante no encontrado')
+            res.status(404).send('No se encontraron restaurantes para este usuario');
         }
     } catch (error) {
-        res.status(500).send('Error al obtener el restaurante')
+        console.error('Error al obtener los restaurantes:', error);
+        res.status(500).send('Error al obtener los restaurantes');
     }
 };
+
 
 const createRestaurante = async (req, res) => {
     const { name, ubicacion, objetivos, descripcion, user_id } = req.body; // Aquí se recibe el user_id
@@ -61,6 +67,7 @@ const createRestaurante = async (req, res) => {
             descripcion,
             user_id // Aquí también podrías devolver el user_id en la respuesta
         });
+        console.log(newRestaurant)
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al crear el restaurante');
@@ -138,86 +145,8 @@ const deleteRestaurante  = async (req, res) => {
 
 export const restaurantController = {
     findRestaurant,
-    findRestaurantByid,
+    findRestaurantsByUserId,
     createRestaurante,
     updateRestaurante,
     deleteRestaurante
 }
-
-/* 
-//! Encuentra todos los restaurantes del usuario autenticado
-const findRestaurant = async (req, res) => {
-    const userId = req.user.id;  // Suponiendo que tienes autenticación
-    try {
-        const restaurants = await restaurantModel.findAllRestaurant(userId);
-        res.json(restaurants);
-    } catch (error) {
-        res.status(500).send('Error al obtener los restaurantes');
-    }
-}
-
-//! Obtener un restaurante específico verificando que pertenece al usuario
-const findRestaurantByid = async (req, res) => {
-    const { id } = req.params;
-    const userId = req.user.id;  
-    try {
-        const restaurant = await restaurantModel.findRestaurantByid(id, userId);
-        if (restaurant) {
-            res.json(restaurant);
-        } else {
-            res.status(404).send('Restaurante no encontrado o no autorizado');
-        }
-    } catch (error) {
-        res.status(500).send('Error al obtener el restaurante');
-    }
-};
-
-//! Crear un nuevo restaurante
-const createRestaurante = async (req, res) => {
-    const { name, ubicacion, objetivos, logo, descripcion } = req.body;
-    const userId = req.user.id;  // Obtener el userId desde la autenticación
-    try {
-        const newRestaurant = await restaurantModel.createRestaurante(name, ubicacion, objetivos, logo, descripcion, userId);
-        res.status(201).json(newRestaurant);
-    } catch (error) {
-        console.error(error); 
-        res.status(500).send('Error al crear el restaurante');
-    }
-}
-
-//! Actualizar un restaurante solo si pertenece al usuario autenticado
-const updateRestaurante = async (req, res) => {
-    const { id } = req.params;
-    const { name, ubicacion, objetivos, logo, descripcion } = req.body;
-    const userId = req.user.id;
-    try {
-        const updatedRestaurant = await restaurantModel.updateRestaurante(id, name, ubicacion, objetivos, logo, descripcion, userId);
-        if (updatedRestaurant) {
-            res.json(updatedRestaurant);
-        } else {
-            res.status(404).send('Restaurante no encontrado o no autorizado');
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).send('Error al actualizar el restaurante');
-    }
-}
-
-//! Eliminar un restaurante solo si pertenece al usuario autenticado
-const deleteRestaurante = async (req, res) => {
-    const { id } = req.params;
-    const userId = req.user.id;
-    try {
-        const deletedRestaurant = await restaurantModel.deleteRestaurante(id, userId);
-        if (deletedRestaurant) {
-            res.json({ message: 'Restaurante eliminado', deletedRestaurant });
-        } else {
-            res.status(404).send('Restaurante no encontrado o no autorizado');
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).send('Error al eliminar el restaurante');
-    }
-}
-
-*/

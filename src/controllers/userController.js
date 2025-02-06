@@ -1,15 +1,19 @@
 import { userModel } from '../models/userModel.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+const secret = process.env.JWT_SECRET || 'tu_clave_secreta';
 
 // Crear un nuevo usuario
 const createUser = async (req, res) => {
-    const { nombreCompleto, correoelectronico, password, ruc, contacto } = req.body;
+    const { nombreCompleto, correoElectronico, password, ruc, contacto } = req.body;
 
-    if (!nombreCompleto || !correoelectronico || !password || !ruc || !contacto) {
+    if (!nombreCompleto || !correoElectronico || !password || !ruc || !contacto) {
         return res.status(400).json({ message: 'Todos los campos son requeridos.' });
     }
 
     try {
-        const newUser = await userModel.createUser(nombreCompleto, correoelectronico, password, ruc, contacto);
+        const newUser = await userModel.createUser(nombreCompleto, correoElectronico, password, ruc, contacto);
         res.status(201).json({
             message: 'Usuario creado exitosamente',
             user: newUser,
@@ -20,17 +24,17 @@ const createUser = async (req, res) => {
     }
 };
 
-// Iniciar sesión sin hash
+// Iniciar sesión
 const login = async (req, res) => {
-    const { correoelectronico, password } = req.body;
+    const { correoElectronico, password } = req.body;
 
-    if (!correoelectronico || !password) {
+    if (!correoElectronico || !password) {
         return res.status(400).json({ message: 'Correo electrónico y contraseña son requeridos.' });
     }
 
     try {
-        const user = await userModel.findUserByEmail(correoelectronico);
-        if (!user || user.password !== password) {
+        const user = await userModel.findUserByEmail(correoElectronico);
+        if (!user) {
             return res.status(400).json({ message: 'Credenciales incorrectas' });
         }
 
@@ -56,14 +60,14 @@ const login = async (req, res) => {
 
 // Validar si el correo existe
 const validateEmail = async (req, res) => {
-    const { correoelectronico } = req.body;
+    const { correoElectronico } = req.body;
 
-    if (!correoelectronico) {
+    if (!correoElectronico) {
         return res.status(400).json({ message: 'El correo electrónico es requerido.' });
     }
 
     try {
-        const user = await userModel.findUserByEmail(correoelectronico);
+        const user = await userModel.findUserByEmail(correoElectronico);
         if (user) {
             return res.status(200).json({ message: 'El correo existe en la base de datos.' });
         } else {
