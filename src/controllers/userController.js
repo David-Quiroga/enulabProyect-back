@@ -34,7 +34,20 @@ const login = async (req, res) => {
             return res.status(400).json({ message: 'Credenciales incorrectas' });
         }
 
-        res.status(200).json({ message: 'Inicio de sesión exitoso', user });
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            return res.status(400).json({ message: 'Credenciales incorrectas' });
+        }
+
+        // Crear un token JWT
+        const token = jwt.sign({ id: user.id, correoElectronico: user.correoElectronico }, secret, { expiresIn: '1h' });
+
+        // Devolver el token y el user_id
+        res.status(200).json({
+            message: 'Inicio de sesión exitoso',
+            token,
+            user_id: user.id, // Devolver el user_id
+        });
     } catch (error) {
         console.error('Error en el inicio de sesión:', error);
         res.status(500).json({ message: 'Error en el inicio de sesión' });

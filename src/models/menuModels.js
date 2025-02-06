@@ -16,13 +16,20 @@ const findMenusByRestaurant = async (restaurant_id) => {
   const { rows } = await pool.query("SELECT * FROM menus WHERE restaurant_id = $1", [restaurant_id]);
   return rows;
 };
+  
+  // Crear un nuevo menú
+//const createMenu = async (name, description) => {
+ //   const query = "INSERT INTO menus (name, description) VALUES ($1, $2) RETURNING *";
+ //   const { rows } = await pool.query(query, [name, description]);
+// //   return rows[0];
+ // };
+
   // Crear un nuevo menú asociado a un restaurante
 const createMenu = async (name, description, restaurant_id) => {
   const query = "INSERT INTO menus (name, description, restaurant_id) VALUES ($1, $2, $3) RETURNING *";
   const { rows } = await pool.query(query, [name, description, restaurant_id]);
   return rows[0];
 };
-
 
   // Actualizar un menú por ID
 const updateMenu = async (id, name, description) => {
@@ -37,7 +44,6 @@ const deleteMenu = async (id) => {
   const { rows } = await pool.query(query, [id]);
   return rows[0]; // Devuelve el menú eliminado si existía
 };
-
 
   export const menuModel = {
     findAllMenus,

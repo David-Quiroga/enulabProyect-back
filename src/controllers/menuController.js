@@ -1,3 +1,4 @@
+
 import { menuModel } from '../models/menuModels.js';
 
 // Obtener todos los menús
@@ -24,7 +25,6 @@ const getMenuById = async (req, res) => {
   }
 };
 
-
 // Obtener menús de un restaurante específico // es solo para provar si los menus pertecen a un restaurante no borrar
 const getMenusByRestaurant = async (req, res) => {
   try {
@@ -37,15 +37,28 @@ const getMenusByRestaurant = async (req, res) => {
 };
 
 // Crear un nuevo menú
+//const createMenu = async (req, res) => {
+//  const { name, description } = req.body;
+//  try {
+//    const newMenu = await menuModel.createMenu(name, description);
+//    res.status(201).json(newMenu);
+//  } catch (err) {
+//    console.error(err); 
+//    res.status(500).send('Error al crear el menú');
+//  }
+//};
+
+// Crear un nuevo menú
 const createMenu = async (req, res) => {
   const { name, description, restaurant_id } = req.body;
   try {
       const newMenu = await menuModel.createMenu(name, description, restaurant_id);
       res.status(201).json(newMenu);
   } catch (err) {
-      console.error(err); 
-      res.status(500).send('Error al crear el menú');
+    console.error('Error detallado:', err); // Verás el error completo en la consola
+    res.status(500).json({ error: err.message }); // Enviará el mensaje de error a Postman
   }
+  
 };
 
 // Actualizar un menú por ID
@@ -91,3 +104,4 @@ export const menuController = {
   deleteMenu,
   getMenusByRestaurant 
 };
+
