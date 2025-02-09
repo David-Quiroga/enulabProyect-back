@@ -1,10 +1,12 @@
 import { pool } from '../db.js'
 
 //Obtener todos los empleados del restaurante
+// Modelo para obtener empleados por restaurantId
 const findEmployeeByRestId = async (restaurantId) => {
-    const { rows } = await pool.query('SELECT * FROM employee WHERE restaurant_id = $1', [restaurantId])
-    return rows;
-};
+    const { rows } = await pool.query('SELECT * FROM employee WHERE restaurant_id = $1', [restaurantId]);
+    return rows; // Devuelve todos los empleados del restaurante
+  };
+  
 
 //Obtener un empleado por iD
 const findEmployeeById = async (restaurantId, employeeId) => {
