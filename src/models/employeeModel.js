@@ -14,10 +14,10 @@ const findEmployeeById = async (restaurantId, employeeId) => {
 
 //Crear un nuevo empleado en un restaurante
 const createEmployee = async (restaurantId, name, cedula, edad, genero, sueldo, telefono, horario) => {
-    const query = 'INSERT INTO employee (restaurant_id, name, cedula, edad, genero, sueldo, telefono, horario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * '
-    const { rows } = await pool.query(query, [restaurantId, name, cedula, edad, genero, sueldo, telefono, horario ])
-    return rows[0]
-}
+    const query = 'INSERT INTO employee (restaurant_id, name, cedula, edad, genero, sueldo, telefono, horario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * ';
+    const { rows } = await pool.query(query, [restaurantId, name, cedula, edad, genero, sueldo, telefono, horario]);
+    return rows[0];
+};
 
 //Actualizar una bebida por ID
 const updateEmployee = async (restaurantId, employeeId, name, cedula, edad, genero, sueldo, telefono, horario) => {

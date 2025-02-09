@@ -28,14 +28,27 @@ const getEmployeeById = async (req, res) => {
 //Crear un empleado
 const createEmployee = async (req, res) => {
     const { name, cedula, edad, genero, sueldo, telefono, horario } = req.body;
-    try {
-        const newEmployee = await employeeModel.createEmployee(req.params.restaurantId, name, cedula, edad, genero, sueldo, telefono, horario)
-        res.status(201).json(newEmployee)
-    } catch (error) {
-        console.log('Error al crear',error)
-        res.status(500).send({error: 'Error al crear el empleado'})
+    const restaurantId = req.params.restaurantId; // Obtener el restaurantId desde los parámetros de la URL
+
+    // Validar que todos los datos necesarios estén presentes
+    if (!restaurantId || !name || !cedula || !edad || !genero || !sueldo || !telefono || !horario) {
+        return res.status(400).send({ error: 'Todos los campos son obligatorios' });
     }
-}
+
+    try {
+        // Crear el empleado utilizando el modelo
+        const newEmployee = await employeeModel.createEmployee(
+            restaurantId, name, cedula, edad, genero, sueldo, telefono, horario
+        );
+
+        // Responder con el nuevo empleado creado
+        res.status(201).json(newEmployee);
+    } catch (error) {
+        console.log('Error al crear el empleado', error);
+        res.status(500).send({ error: 'Error al crear el empleado' });
+    }
+};
+
 
 //Actualizar el empleado por id
 const updateEmployee = async (req, res) => {
