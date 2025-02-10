@@ -27,8 +27,15 @@ const updateSupplier = async (restaurantId,idSupplier, nameSupplier, numContact,
     email = $5, direction = $6,city = $7, country = $8 WHERE  restaurant_id = $1 AND id = $2
     RETURNING *`;
     console.log('Ejecutando query de actualización:', query);
-    const { rows } = await pool.query(query, [restaurantId, idSupplier, nameSupplier, numContact, email, direction, city, country]);
-    return rows[0];
+
+    const values = [restaurantId, idSupplier, nameSupplier, numContact, email, direction, city, country]
+    try{
+        const {rows} = await pool.query(query, values)
+        return rowa[0] //devuelve el empleado actualizado
+    } catch (error){
+        console.log("Error en actualizar proveedores", error);
+        throw error;
+    }
 };
 
 // Eliminar un proveedor por ID
