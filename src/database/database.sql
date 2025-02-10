@@ -73,8 +73,8 @@ CREATE TABLE users (
 CREATE TABLE suppliers (
     id SERIAL PRIMARY KEY,
     restaurant_id INTEGER REFERENCES restaurant(id) ON DELETE CASCADE,
-    nameSupplier VARCHAR(255),
-    numContact VARCHAR(20),
+    namesupplier VARCHAR(255),
+    numcontact VARCHAR(20),
     email VARCHAR(255),
     direction TEXT,
     city VARCHAR(100),

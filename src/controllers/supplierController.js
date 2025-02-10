@@ -27,15 +27,15 @@ const getSupplierById = async (req, res) => {
 
 // Crear un nuevo proveedor
 const createSupplier = async (req, res) => {
-    const { nameSupplier, numContact, email, direction, city, country } = req.body;
+    const { namesupplier, numcontact, email, direction, city, country } = req.body;
     const restaurantId = req.params.restaurantId;
       // Validar que todos los datos necesarios estén presentes
-      if (!restaurantId || !nameSupplier || !numContact|| !email || !direction || !city|| !country) {
+      if (!restaurantId || !namesupplier || !numcontact|| !email || !direction || !city|| !country) {
         return res.status(400).send({ error: 'Todos los campos son obligatorios' });
       }
     try {
         const newSupplier = await supplierModel.createSupplier(restaurantId, 
-            nameSupplier, numContact, email, direction, city, country);
+            namesupplier, numcontact, email, direction, city, country);
         res.status(201).json(newSupplier);
     } catch (err) {
         console.log('Error al crear', err)
@@ -46,10 +46,10 @@ const createSupplier = async (req, res) => {
 // Actualizar un proveedor por ID
 const updateSupplier = async (req, res) => {
     const { restaurantId, id } = req.params;
-    const { nameSupplier, numContact, email, direction, city, country } = req.body
-    console.log('Datos recibidos:', { nameSupplier, numContact, email, direction, city, country });
+    const { namesupplier, numcontact, email, direction, city, country } = req.body
+    console.log('Datos recibidos:', { namesupplier, numcontact, email, direction, city, country });
     try {
-        const updatedSupplier = await supplierModel.updateSupplier(restaurantId, id, nameSupplier, numContact, email, direction, city, country);
+        const updatedSupplier = await supplierModel.updateSupplier(restaurantId, id, namesupplier, numcontact, email, direction, city, country);
         if (updatedSupplier) {
             res.json(updatedSupplier);
         } else {

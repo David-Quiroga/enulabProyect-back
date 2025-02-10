@@ -14,24 +14,24 @@ const findSupplierById = async (restaurantId, idSupplier) => {
 };
 
 // Crear un nuevo proveedor
-const createSupplier = async (restaurantId,nameSupplier, numContact, email, direction, city, country) => {
-    const query = "INSERT INTO suppliers (restaurant_id,nameSupplier, numContact, email, direction, city, country) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
-    const { rows } = await pool.query(query, [restaurantId,nameSupplier, numContact, email, direction, city, country]);
+const createSupplier = async (restaurantId,namesupplier, numcontact, email, direction, city, country) => {
+    const query = "INSERT INTO suppliers (restaurant_id,namesupplier, numcontact, email, direction, city, country) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
+    const { rows } = await pool.query(query, [restaurantId,namesupplier, numcontact, email, direction, city, country]);
     return rows[0];
 };
 
 // Actualizar un proveedor por ID
-const updateSupplier = async (restaurantId,idSupplier, nameSupplier, numContact, email, direction, city, country) => {
+const updateSupplier = async (restaurantId,idSupplier, namesupplier, numcontact, email, direction, city, country) => {
     const query = 
-    `UPDATE suppliers SET nameSupplier = $3, numContact = $4, 
-    email = $5, direction = $6,city = $7, country = $8 WHERE  restaurant_id = $1 AND id = $2
+    `UPDATE suppliers SET namesupplier = $1, numcontact = $2, 
+    email = $3, direction = $4,city = $5, country = $6 WHERE  restaurant_id = $7 AND id = $8
     RETURNING *`;
     console.log('Ejecutando query de actualización:', query);
 
-    const values = [restaurantId, idSupplier, nameSupplier, numContact, email, direction, city, country]
+    const values = [ namesupplier, numcontact, email, direction, city, country,restaurantId, idSupplier]
     try{
         const {rows} = await pool.query(query, values)
-        return rowa[0] //devuelve el empleado actualizado
+        return rows[0] //devuelve el empleado actualizado
     } catch (error){
         console.log("Error en actualizar proveedores", error);
         throw error;
