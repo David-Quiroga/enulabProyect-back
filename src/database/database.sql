@@ -53,10 +53,9 @@ CREATE TABLE employee (
 CREATE TABLE inventory (
     id SERIAL PRIMARY KEY,
     restaurant_id INTEGER REFERENCES restaurant(id) ON DELETE CASCADE, 
-    nombreProductos VARCHAR(100),
-    estado BOOLEAN,
+    nombreProductos VARCHAR(500),
     cantidad INTEGER,
-    categoria VARCHAR(20),
+    categoria VARCHAR(500),
     descripcion TEXT
 );
 -- Crea la tabla usuarios (users)
