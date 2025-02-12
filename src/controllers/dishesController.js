@@ -1,4 +1,4 @@
-import { dishesModel } from "../models/dishesModel.js";
+import { dishesModel } from "../models/dishesModels.js";
 
 // Obtener todos los platos de un menú específico
 const getAllDishes = async (req, res) => {
