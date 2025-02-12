@@ -16,6 +16,7 @@ import supplierRoutes from './routes/supplierRoutes.js';
 import food_typeRoutes from './routes/food_typeRoutes.js';
 import reserveRoutes from './routes/reserveRouter.js';
 import commentRoutes from './routes/commentRoutes.js';
+import reservationRoutes from './routes/reservationRoutes.js'
 import morgan from 'morgan';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -45,6 +46,7 @@ app.use('/api', supplierRoutes);
 app.use('/api', food_typeRoutes);
 app.use('/api', reserveRoutes);
 app.use('/api', commentRoutes);
+app.use('/api', reservationRoutes)
 
 // Ruta para servir archivos estáticos (como imágenes)
 app.use('/img/usuario', express.static(path.join(__dirname, 'public/img/usuario')));

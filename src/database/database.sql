@@ -109,4 +109,16 @@ CREATE TABLE comment (
     content TEXT
 );
 
+-- Crea la tabla de reservas (reservations)
+CREATE TABLE reservations (
+    id SERIAL PRIMARY KEY,
+    restaurant_id INTEGER REFERENCES restaurant(id) ON DELETE CASCADE, 
+    name VARCHAR(500),
+    date DATE,
+    hour TIME,
+    numcontact VARCHAR(20),
+    pay BOOLEAN
+);
+
+
 */
