@@ -118,6 +118,8 @@ CREATE TABLE reservations (
     hour TIME,
     numcontact VARCHAR(20),
     pay BOOLEAN
+    code INTEGER;
+     note TEXT;
 );
 
 

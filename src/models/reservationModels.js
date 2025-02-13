@@ -13,14 +13,14 @@ const findReservationById = async (restaurantId, reservationId) => {
 };
 
 // Crear una nueva reserva en un restaurante
-const createReservation = async (restaurantId, name, date, hour, numcontact, pay) => {
+const createReservation = async (restaurantId, name, date, hour, numcontact, pay, code, note) => {
     const query = `
-        INSERT INTO reservations (restaurant_id, name, date, hour, numcontact, pay) 
-        VALUES ($1, $2, $3, $4, $5, $6) 
+        INSERT INTO reservations (restaurant_id, name, date, hour, numcontact, pay, code, note) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
         RETURNING *;
     `;
     try {
-        const { rows } = await pool.query(query, [restaurantId, name, date, hour, numcontact, pay]);
+        const { rows } = await pool.query(query, [restaurantId, name, date, hour, numcontact, pay, code, note]);
         return rows[0];
     } catch (error) {
         console.error("Error al crear la reserva:", error);
@@ -29,15 +29,15 @@ const createReservation = async (restaurantId, name, date, hour, numcontact, pay
 };
 
 // Actualizar una reserva por ID
-const updateReservation = async (restaurantId, reservationId, name, date, hour, numcontact, pay) => {
+const updateReservation = async (restaurantId, reservationId, name, date, hour, numcontact, pay, code, note) => {
     const query = `
         UPDATE reservations 
-        SET name = $1, date = $2, hour = $3, numcontact = $4, pay = $5 
-        WHERE restaurant_id = $6 AND id = $7 
+        SET name = $1, date = $2, hour = $3, numcontact = $4, pay = $5, code = $6, note = $7
+        WHERE restaurant_id = $8 AND id = $9 
         RETURNING *;
     `;
 
-    const values = [name, date, hour, numcontact, pay, restaurantId, reservationId];
+    const values = [name, date, hour, numcontact, pay, code, note, restaurantId, reservationId];
 
     try {
         const { rows } = await pool.query(query, values);

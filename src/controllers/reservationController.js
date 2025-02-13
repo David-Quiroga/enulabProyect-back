@@ -27,10 +27,10 @@ const getReservationById = async (req, res) => {
 
 // Crear una nueva reserva
 const createReservation = async (req, res) => {
-    const { name, date, hour, numcontact, pay } = req.body;
-    const {restaurantId} = req.params;
+    const { name, date, hour, numcontact, pay, code, note } = req.body;
+    const { restaurantId } = req.params;
 
-    if (!restaurantId || !name || !date || !hour || !numcontact) {
+    if (!restaurantId || !name || !date || !hour || !numcontact || !code ) {
         return res.status(400).json({ error: "Todos los campos son requeridos" });
     }
 
@@ -41,7 +41,9 @@ const createReservation = async (req, res) => {
             date,
             hour,
             numcontact,
-            pay
+            pay,
+            code,
+            note
         );
         res.status(201).json(newReservation);
     } catch (error) {
@@ -51,21 +53,32 @@ const createReservation = async (req, res) => {
 };
 
 // Actualizar una reserva por ID
-const handleUpdate = async (e) => {
-    e.preventDefault();
-  
-    console.log("Formulario antes de enviar:", formData);  // Verificar los datos
-  
+const updateReservation = async (req, res) => {
+    const { restaurantId, id } = req.params;
+    const { name, date, hour, numcontact, pay, code, note } = req.body;
+
     try {
-      const updatedReservation = await updateReservation(restaurantId, selectedReserva._id, formData);
-      console.log("Reserva actualizada:", updatedReservation);
-      setReserva(updatedReservation); // Actualizar el estado con la reserva modificada
-      setOpenModal(false); // Cerrar el modal
+        const updatedReservation = await reservationsModel.updateReservation(
+            restaurantId,
+            id,
+            name,
+            date,
+            hour,
+            numcontact,
+            pay,
+            code,
+            note
+        );
+        if (updatedReservation) {
+            res.json(updatedReservation);
+        } else {
+            res.status(404).send('Reserva no encontrada');
+        }
     } catch (error) {
-      console.error("Error al actualizar la reserva:", error);
+        res.status(500).send('Error al actualizar la reserva');
     }
-  };
-  
+};
+
 // Eliminar una reserva por ID
 const deleteReservation = async (req, res) => {
     const { restaurantId, id } = req.params;
