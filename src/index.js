@@ -17,6 +17,7 @@ import food_typeRoutes from './routes/food_typeRoutes.js';
 import reserveRoutes from './routes/reserveRouter.js';
 import commentRoutes from './routes/commentRoutes.js';
 import morgan from 'morgan';
+import { whatsapp, qrCode } from './whatsapp/whatsapp.js';  // Ahora qrCode está exportado
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,6 +32,15 @@ app.use(cors({
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(fileUpload({ createParentPath: true }));
+
+// Ruta para enviar el código QR generado
+app.get('/api/qr', (req, res) => {
+    if (qrCode) {
+        return res.json({ qr: qrCode }); // Enviar el QR al cliente
+    } else {
+        return res.status(400).json({ success: false, message: 'QR aún no generado' });
+    }
+});
 
 // Rutas para las API
 app.use('/api', menuRoutes);
@@ -55,3 +65,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`);
 });
+
+// Inicializa whatsapp cuando el servidor arranca
+whatsapp.initialize();
