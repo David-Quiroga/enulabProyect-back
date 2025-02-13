@@ -13,22 +13,40 @@ const findInventoryById = async (restaurantId, inventoryId) => {
 }
 
 // Crear un nuevo inventario en un restaurante
-const createInventory = async (restaurantId, nombreProductos, estado, cantidad, categoria, descripcion) => {
-    const query = 'INSERT INTO inventory (restaurant_id, nombreProductos, estado, cantidad, categoria, descripcion) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const { rows } = await pool.query(query, [restaurantId, nombreProductos, estado, cantidad, categoria, descripcion]); // Orden correcto
-    return rows[0];
+const createInventory = async (restaurantId, nombreproductos, cantidad, categoria, descripcion) => {
+    const query = `
+        INSERT INTO inventory (restaurant_id, nombreproductos, cantidad, categoria, descripcion) 
+        VALUES ($1, $2, $3, $4, $5) 
+        RETURNING *
+    `;
+    try {
+        const { rows } = await pool.query(query, [restaurantId, nombreproductos, cantidad, categoria, descripcion]);
+        return rows[0];
+    } catch (error) {
+        console.error("Error al crear el inventario:", error);
+        throw error;
+    }
 };
 
+// Actualizar un inventario por ID
+const updateInventory = async (restaurantId, inventoryId, nombreproductos, cantidad, categoria, descripcion) => {
+    const query = `
+        UPDATE inventory 
+        SET nombreproductos = $1, cantidad = $2, categoria = $3, descripcion = $4 
+        WHERE restaurant_id = $5 AND id = $6 
+        RETURNING *;
+    `;
 
-// Actualizar un inventario por id
-const updateInventory = async (restaurantId, inventoryId, nombreProductos, estado, cantidad, categoria, descripcion) => {
-    const query = 'UPDATE inventory SET nombreProductos = $1, estado = $2, cantidad = $3, categoria = $4, descripcion = $5 WHERE restaurant_id = $6 AND id = $7 RETURNING *';
-    const { rows } = await pool.query(query, [
-        nombreProductos, estado, cantidad, categoria, descripcion, restaurantId, inventoryId // Orden correcto
-    ]);
-    return rows[0];
+    const values = [nombreproductos, cantidad, categoria, descripcion, restaurantId, inventoryId]; // Orden corregido
+
+    try {
+        const { rows } = await pool.query(query, values);
+        return rows[0];
+    } catch (error) {
+        console.error("Error al actualizar el inventario:", error);
+        throw error;
+    }
 };
-
 
 
 //Eliminar un inventario por id

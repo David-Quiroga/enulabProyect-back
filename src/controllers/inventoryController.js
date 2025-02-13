@@ -25,34 +25,61 @@ const getInventoryById = async (req, res) => {
     }
 }
 
-//Crear un inventario
+// Crear un inventario
 const createInventory = async (req, res) => {
-    const { nombreProductos, estado, cantidad, categoria, descripcion } = req.body
-    try {
-        const newInventory = await inventoryModel.createInventory(req.params.restaurantId, nombreProductos, estado, cantidad, categoria, descripcion)
-        res.status(201).json(newInventory)
-    } catch (error) {
-        console.log('Error al crear',error)
-        res.status(500).send({error: 'Error al crear el inventario'})
-    }
-}
+    const { nombreproductos, cantidad, categoria, descripcion } = req.body;
+    const { restaurantId } = req.params; 
 
-//Actualizar el inventario por id
-const updateInventory = async (req, res) => {
-    const { restaurantId, id } = req.params
-    const { nombreProductos, estado, cantidad, categoria, descripcion } = req.body
+    if (!restaurantId || !nombreproductos || !cantidad || !categoria || !descripcion) {
+        return res.status(400).json({ error: "Todos los campos son requeridos" });
+    }
+
     try {
-        const updateInventory = await inventoryModel.updateInventory(restaurantId, id, nombreProductos, estado, cantidad, categoria, descripcion)
-        if (updateInventory) {
-            res.json(updateInventory)
+        const newInventory = await inventoryModel.createInventory(
+            restaurantId,
+            nombreproductos,
+            cantidad,
+            categoria,
+            descripcion
+        );
+        res.status(201).json(newInventory);
+    } catch (error) {
+        console.error("Error al crear el inventario:", error);
+        res.status(500).json({ error: "Error al crear el inventario" });
+    }
+};
+
+// Actualizar el inventario por ID
+const updateInventory = async (req, res) => {
+    const { restaurantId, id } = req.params;
+    const { nombreproductos, cantidad, categoria, descripcion } = req.body;
+
+    // Validar que los parámetros sean correctos
+    if (!restaurantId || !id) {
+        return res.status(400).json({ error: "El restaurantId y el id del inventario son requeridos" });
+    }
+
+    try {
+        const updatedInventory = await inventoryModel.updateInventory(
+            restaurantId,
+            id,
+            nombreproductos,
+            cantidad,
+            categoria,
+            descripcion
+        );
+
+        if (updatedInventory) {
+            res.json(updatedInventory);
         } else {
-            res.status(404).send('Inventario no encontrado')
+            res.status(404).json({ error: "Inventario no encontrado" });
         }
     } catch (error) {
-        console.log(error)
-        res.status(500).send('Error al actualizar el inventario')
+        console.error("Error al actualizar el inventario:", error);
+        res.status(500).json({ error: "Error al actualizar el inventario" });
     }
-}
+};
+
 
 //Eliminar restaurante por id
 const deleteInventory = async (req, res) => {

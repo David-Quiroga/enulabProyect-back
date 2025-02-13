@@ -3,6 +3,8 @@ import pkg from 'whatsapp-web.js';
 
 const { Client, LocalAuth } = pkg;
 
+let whatsappReady = false;
+
 const whatsapp = new Client({
     puppeteer: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -15,24 +17,22 @@ const whatsapp = new Client({
     },
 });
 
-// Definir una función para generar el QR
-const qrCode = (qr) => {
+// Función para generar el QR
+let qrCodeData = null; // Variable para almacenar el QR
+
+whatsapp.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
-};
-
-let whatsappReady = false;
-
-whatsapp.on('qr', qrCode);  // Usar qrCode aquí
+    qrCodeData = qr; // Guardamos el código QR
+});
 
 whatsapp.on('ready', () => {
-    console.log('Client is ready!');
+    console.log('✅ WhatsApp está listo!');
     whatsappReady = true;
 });
 
 whatsapp.on('disconnected', () => {
-    console.log('Client was logged out');
+    console.log('⚠️ WhatsApp se desconectó');
     whatsappReady = false;
 });
 
-// Exportar whatsapp y qrCode
-export { whatsapp, qrCode, whatsappReady };
+export { whatsapp, whatsappReady, qrCodeData };

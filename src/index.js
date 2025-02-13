@@ -14,10 +14,10 @@ import inventoryRoutes from './routes/inventoryRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import supplierRoutes from './routes/supplierRoutes.js';
 import food_typeRoutes from './routes/food_typeRoutes.js';
-import reserveRoutes from './routes/reserveRouter.js';
+import reserveRoutes from './routes/reservationRoutes.js';
 import commentRoutes from './routes/commentRoutes.js';
 import morgan from 'morgan';
-import { whatsapp, qrCode } from './whatsapp/whatsapp.js';  // Ahora qrCode está exportado
+import { whatsapp, whatsappReady, qrCodeData } from './whatsapp/whatsapp.js';;  // Ahora qrCode está exportado
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,7 +26,7 @@ const app = express();
 
 // Configura CORS para permitir solicitudes desde tu frontend
 app.use(cors({
-  origin: 'http://localhost:3000'  // Frontend corriendo en el puerto 3000
+    origin: ['http://localhost:3000', 'http://localhost:9000']  // Frontend corriendo en el puerto 3000
 }));
 
 app.use(morgan('dev'));
@@ -35,8 +35,8 @@ app.use(fileUpload({ createParentPath: true }));
 
 // Ruta para enviar el código QR generado
 app.get('/api/qr', (req, res) => {
-    if (qrCode) {
-        return res.json({ qr: qrCode }); // Enviar el QR al cliente
+    if (qrCodeData) {
+        return res.json({ qr: qrCodeData }); // Enviar el QR almacenado
     } else {
         return res.status(400).json({ success: false, message: 'QR aún no generado' });
     }

@@ -1,13 +1,13 @@
 import express from 'express';
-import { dishController } from '../controllers/dishesController.js';
+import { dishesController } from '../controllers/dishesController.js';
 
 const router = express.Router();
 
 // Rutas para Platos
-router.get('/menus/:menuId/dishes', dishController.getDishesByMenuId); 
-router.get('/menus/:menuId/dishes/:id', dishController.getDishById);
-router.post('/menus/:menuId/dishes', dishController.createDish);
-router.put('/menus/:menuId/dishes/:id', dishController.updateDish); 
-router.delete('/menus/:menuId/dishes/:id', dishController.deleteDish);
+router.get('/menus/:menuId/dishes', dishesController.getAllDishes); 
+router.get('/menus/:menuId/dishes/:id', dishesController.getDishById);  // Cambio aquí
+router.post('/menus/:menuId/dishes', dishesController.createDish);
+router.put('/menus/:menuId/dishes/:id', dishesController.updateDish);  // Cambio aquí
+router.delete('/menus/:menuId/dishes/:id', dishesController.deleteDish);  // Cambio aquí
 
 export default router;

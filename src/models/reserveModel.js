@@ -1,4 +1,4 @@
-import { pool } from '../db.js'
+/* import { pool } from '../db.js'
 
 //Obtener todas las reservas del restaurante
 const findReserveByRestId = async (restaurantId) => {
@@ -23,4 +23,4 @@ export const reserveModel = {
     findReserveByRestId,
     findReserveById,
     createReserve
-}
+} */

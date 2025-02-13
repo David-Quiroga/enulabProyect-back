@@ -1,10 +1,12 @@
 import { pool } from '../db.js'
 
 //Obtener todos los empleados del restaurante
+// Modelo para obtener empleados por restaurantId
 const findEmployeeByRestId = async (restaurantId) => {
-    const { rows } = await pool.query('SELECT * FROM employee WHERE restaurant_id = $1', [restaurantId])
-    return rows;
-};
+    const { rows } = await pool.query('SELECT * FROM employee WHERE restaurant_id = $1', [restaurantId]);
+    return rows; // Devuelve todos los empleados del restaurante
+  };
+  
 
 //Obtener un empleado por iD
 const findEmployeeById = async (restaurantId, employeeId) => {
@@ -14,10 +16,10 @@ const findEmployeeById = async (restaurantId, employeeId) => {
 
 //Crear un nuevo empleado en un restaurante
 const createEmployee = async (restaurantId, name, cedula, edad, genero, sueldo, telefono, horario) => {
-    const query = 'INSERT INTO employee (restaurant_id, name, cedula, edad, genero, sueldo, telefono, horario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * '
-    const { rows } = await pool.query(query, [restaurantId, name, cedula, edad, genero, sueldo, telefono, horario ])
-    return rows[0]
-}
+    const query = 'INSERT INTO employee (restaurant_id, name, cedula, edad, genero, sueldo, telefono, horario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * ';
+    const { rows } = await pool.query(query, [restaurantId, name, cedula, edad, genero, sueldo, telefono, horario]);
+    return rows[0];
+};
 
 //Actualizar una bebida por ID
 const updateEmployee = async (restaurantId, employeeId, name, cedula, edad, genero, sueldo, telefono, horario) => {
