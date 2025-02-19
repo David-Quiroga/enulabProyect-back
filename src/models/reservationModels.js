@@ -13,20 +13,22 @@ const findReservationById = async (restaurantId, reservationId) => {
 };
 
 // Crear una nueva reserva en un restaurante
-const createReservation = async (restaurantId, name, date, hour, numcontact, guests, note, code) => {
+const createReservation = async (restaurantId, name, date, hour, numcontact, guests, note, code, confirmed = false) => {
     const query = `
-        INSERT INTO reserve (restaurant_id, name, date, hour, numcontact, guests, note, code) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+        INSERT INTO reserve (restaurant_id, name, date, hour, numcontact, guests, note, code, confirmed) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
         RETURNING *;
     `;
     try {
-        const { rows } = await pool.query(query, [restaurantId, name, date, hour, numcontact, guests, note, code]);
+        const { rows } = await pool.query(query, [restaurantId, name, date, hour, numcontact, guests, note, code, confirmed]);
         return rows[0];
     } catch (error) {
         console.error("Error al crear la reserva:", error);
         throw error;
     }
 };
+
+
 /* const createReservation = async (restaurantId, name, date, hour, numcontact, pay, code, note) => {
     const query = `
         INSERT INTO reservations (restaurant_id, name, date, hour, numcontact, pay, code, note) 
@@ -43,15 +45,15 @@ const createReservation = async (restaurantId, name, date, hour, numcontact, gue
 }; */
 
 // Actualizar una reserva por ID
-const updateReservation = async (restaurantId, reservationId, name, date, hour, numcontact, pay, code, note) => {
+const updateReservation = async (restaurantId, reservationId, name, date, hour, numcontact, code, note, bank, confirmed) => {
     const query = `
-        UPDATE reservations 
-        SET name = $1, date = $2, hour = $3, numcontact = $4, pay = $5, code = $6, note = $7
-        WHERE restaurant_id = $8 AND id = $9 
+        UPDATE reserve
+        SET name = $1, date = $2, hour = $3, numcontact = $4, code = $5, note = $6, bank = $7, confirmed = $8
+        WHERE restaurant_id = $9 AND id = $10
         RETURNING *;
     `;
 
-    const values = [name, date, hour, numcontact, pay, code, note, restaurantId, reservationId];
+    const values = [name, date, hour, numcontact, code, note, bank, confirmed, restaurantId, reservationId];
 
     try {
         const { rows } = await pool.query(query, values);
@@ -61,6 +63,9 @@ const updateReservation = async (restaurantId, reservationId, name, date, hour, 
         throw error;
     }
 };
+
+
+
 
 // Eliminar una reserva por ID
 const deleteReservation = async (restaurantId, reservationId) => {

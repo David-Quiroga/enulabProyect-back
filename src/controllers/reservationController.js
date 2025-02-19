@@ -28,16 +28,14 @@ const getReservationById = async (req, res) => {
 
 // Crear una nueva reserva
 const createReservation = async (req, res) => {
-    const { name, date, hour, numcontact, guests, note, code } = req.body;
+    const { name, date, hour, numcontact, guests, note } = req.body;
     const { restaurantId } = req.params;
-
-    // Validación de campos requeridos
-    if (!restaurantId || !name || !date || !hour || !numcontact || !guests || !note || !code) {
+    // 🔹 Validación de datos obligatorios
+    if (!restaurantId || !name || !date || !hour || !numcontact || !guests || !note ) {
         return res.status(400).json({ error: "Todos los campos son requeridos" });
     }
-
     try {
-        // Primero, guarda la reserva en la base de datos
+        // 🔹 Guardar la reserva en la base de datos
         const newReservation = await reservationsModel.createReservation(
             restaurantId,
             name,
@@ -45,57 +43,41 @@ const createReservation = async (req, res) => {
             hour,
             numcontact,
             guests,
-            note,
-            code
+            note
         );
-
-        // Enviar el mensaje de confirmación al número proporcionado (usando 'note' directamente)
-        const chatId = numcontact.replace(/\D/g, "").substring(1) + "@c.us";
-
-        // Verificar si el número está registrado en WhatsApp
-        const isRegistered = await whatsapp.isRegisteredUser(chatId);
-
-        if (isRegistered) {
-            // Usamos directamente 'note' para enviar el mensaje de confirmación
-            await whatsapp.sendMessage(chatId, `Hola ${name}, tu reserva para ${date} a las ${hour} ha sido confirmada. Nota: ${note}`);
-        } else {
-            console.error("Número no registrado en WhatsApp");
+        // 🔹 Verificar que WhatsApp está listo
+        if (!whatsappReady) {
+            console.log("⚠️ WhatsApp no está listo, no se enviará el mensaje.");
+            return res.status(201).json(newReservation);
         }
-
-        // Después de enviar el mensaje, respondemos con la nueva reserva
+        // 🔹 Formatear el número de teléfono para WhatsApp
+        const codigoPais = "593"; // Ajustar según el país
+        const numeroLimpio = numcontact.replace(/\D/g, ""); // Elimina caracteres no numéricos
+        const numeroFormateado = `${codigoPais}${numeroLimpio.substring(1)}@c.us`; // Formato internacional
+        // 🔹 Verificar si el número está registrado en WhatsApp
+        const isRegistered = await whatsapp.isRegisteredUser(numeroFormateado);
+        if (isRegistered) {
+            // 🔹 Enviar mensaje de confirmación de reserva
+            await whatsapp.sendMessage(
+                numeroFormateado,`🍽️ *Reserva Confirmada*\n👤 *Nombre:* ${name}\n📅 *Fecha:* ${date}\n⏰ *Hora:* ${hour}\n👥 *Personas:* ${guests}\n📝 *Nota:* ${note}\n\n¡Gracias por reservar con nosotros! 🎉. Pon 'confirmar' en minusculas`
+            );
+            console.log("✅ Mensaje enviado a:", numeroFormateado);
+        } else {
+            console.log("❌ Número no registrado en WhatsApp:", numeroFormateado);
+        }
+        // 🔹 Responder con la reserva creada
         res.status(201).json(newReservation);
         
     } catch (error) {
-        console.error("Error al crear la reserva:", error);
+        console.error("❌ Error al crear la reserva:", error);
         res.status(500).json({ error: "Error al crear la reserva" });
     }
 };
 
 
-/* 
-
-// Función para enviar mensaje a WhatsApp
-const enviarMensaje = async (numcontact, note) => {
-    if (!whatsappReady) {
-        console.log("WhatsApp aún no está listo");
-        return;
-    }
-
-    const chatId = telefono.replace(/\D/g, "").substring(1) + "@c.us"; // Formato correcto
-    const isRegistered = await whatsapp.isRegisteredUser(chatId);
-
-    if (isRegistered) {
-        await whatsapp.sendMessage(chatId, note);
-        console.log(`Mensaje enviado a ${numcontact}`);
-    } else {
-        console.log(`Número ${numcontact} no está registrado en WhatsApp`);
-    }
-}; */
-
-// Actualizar una reserva por ID
 const updateReservation = async (req, res) => {
     const { restaurantId, id } = req.params;
-    const { name, date, hour, numcontact, pay, code, note } = req.body;
+    const { name, date, hour, numcontact, code, note, bank, confirmed } = req.body; // 🔹 Se añade confirmed
 
     try {
         const updatedReservation = await reservationsModel.updateReservation(
@@ -105,10 +87,12 @@ const updateReservation = async (req, res) => {
             date,
             hour,
             numcontact,
-            pay,
             code,
-            note
+            note,
+            bank,
+            confirmed // 🔹 Se envía el estado de la confirmación
         );
+
         if (updatedReservation) {
             res.json(updatedReservation);
         } else {
@@ -118,6 +102,8 @@ const updateReservation = async (req, res) => {
         res.status(500).send('Error al actualizar la reserva');
     }
 };
+
+
 
 // Eliminar una reserva por ID
 const deleteReservation = async (req, res) => {

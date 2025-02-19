@@ -1,10 +1,21 @@
-import qrcode from 'qrcode-terminal';
+import QRCode from 'qrcode';  // Asegúrate de usar el paquete correcto
+import { Server } from 'socket.io';
+import http from 'http';
 import pkg from 'whatsapp-web.js';
 
 const { Client, LocalAuth } = pkg;
 
-let whatsappReady = false;
+// Configurar el servidor HTTP y WebSocket
+const server = http.createServer();
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:3000', // O la URL de tu frontend
+        methods: ['GET', 'POST']
+    }
+});
 
+
+let whatsappReady = false;
 const whatsapp = new Client({
     puppeteer: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -18,21 +29,49 @@ const whatsapp = new Client({
 });
 
 // Función para generar el QR
-let qrCodeData = null; // Variable para almacenar el QR
-
-whatsapp.on('qr', (qr) => {
-    qrcode.generate(qr, { small: true });
-    qrCodeData = qr; // Guardamos el código QR
-});
-
-whatsapp.on('ready', () => {
-    console.log('✅ WhatsApp está listo!');
-    whatsappReady = true;
+let qrCodeData = null;
+whatsapp.on('qr', async (qr) => {
+    console.log('Código QR generado');
+    try {
+        // Genera el QR como DataURL
+        const qrCodeData = await QRCode.toDataURL(qr);
+        console.log('QR enviado:', qrCodeData); // Verifica que el QR es correcto
+        io.emit('qr', qrCodeData); // Enviar QR al frontend
+    } catch (error) {
+        console.error('Error generando el QR:', error);
+    }
 });
 
 whatsapp.on('disconnected', () => {
     console.log('⚠️ WhatsApp se desconectó');
     whatsappReady = false;
+});
+
+whatsapp.on('ready', () => {
+    console.log("✅ WhatsApp está listo!");
+    whatsappReady = true;
+});
+
+whatsapp.on('message_create', message => {
+    if (message.body.trim().toLowerCase() === 'confirmar') {
+        message.reply(
+            '💳 *Nuestros Métodos de Pago* 💳\n\n' +
+            '📌 Puedes realizar tu pago a cualquiera de las siguientes cuentas:\n\n' +
+            '🏦 *Banco Pichincha*\n' +
+            '💼 *Cuenta de Ahorro Transaccional*\n' +
+            '🔢 *Número:* 2209093737\n' +
+            '———————————————\n' +
+            '🏦 *Banco del Pacífico*\n' +
+            '💼 *Cuenta de Ahorro Transaccional*\n' +
+            '🔢 *Número:* 1357924680\n\n' +
+            '✅ Una vez realizado el pago, envíanos el comprobante para confirmar tu transacción. ¡Gracias por tu preferencia! 😊'
+        );
+    }
+});
+
+// Iniciar servidor WebSocket
+server.listen(3001, () => {
+    console.log('🚀 Servidor WebSocket corriendo en http://localhost:3001');
 });
 
 export { whatsapp, whatsappReady, qrCodeData };

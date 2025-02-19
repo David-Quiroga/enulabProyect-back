@@ -6,5 +6,5 @@ export const pool  = new pg.Pool({
     host: "localhost",
     password: "Campos0430",
     database: "enulab",
-    port: "5433"
+    port: "5433" /*5434*/
 })

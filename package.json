@@ -23,7 +23,9 @@
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "pg": "^8.13.1",
+    "qrcode": "^1.5.4",
     "qrcode-terminal": "^0.12.0",
+    "socket.io": "^4.8.1",
     "whatsapp-web.js": "^1.26.0"
   }
 }
