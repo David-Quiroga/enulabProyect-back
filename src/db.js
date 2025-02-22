@@ -4,7 +4,7 @@ import pg  from 'pg'
 export const pool  = new pg.Pool({
     user: "postgres",
     host: "localhost",
-    password: "Campos0430",
+    password: "1234",
     database: "enulab",
-    port: "5433" /*5434*/
+    port: "5432" /*5434*/
 })
