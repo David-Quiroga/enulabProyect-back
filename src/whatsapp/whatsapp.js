@@ -53,7 +53,9 @@ whatsapp.on('ready', () => {
 });
 
 whatsapp.on('message_create', message => {
-    if (message.body.trim().toLowerCase() === 'confirmar') {
+    const msg = message.body.trim().toLowerCase(); // Normaliza el texto
+
+    if (msg === 'confirmar') {
         message.reply(
             '💳 *Nuestros Métodos de Pago* 💳\n\n' +
             '📌 Puedes realizar tu pago a cualquiera de las siguientes cuentas:\n\n' +
@@ -64,7 +66,12 @@ whatsapp.on('message_create', message => {
             '🏦 *Banco del Pacífico*\n' +
             '💼 *Cuenta de Ahorro Transaccional*\n' +
             '🔢 *Número:* 1357924680\n\n' +
-            '✅ Una vez realizado el pago, envíanos el comprobante para confirmar tu transacción. ¡Gracias por tu preferencia! 😊'
+            '✅ Una vez realizado el pago, envíanos el comprobante y escribe *"pago realizado"* para confirmar tu reserva. ¡Gracias por tu preferencia! 😊'
+        );
+    } else if (msg === 'pago realizado') {
+        message.reply(
+            '✅ *Tu reserva ha sido confirmada.* 🎉\n\n' +
+            '¡Gracias por tu pago! Te esperamos en nuestro restaurante. 🍽️😊'
         );
     }
 });

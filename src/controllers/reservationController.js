@@ -59,7 +59,7 @@ const createReservation = async (req, res) => {
         if (isRegistered) {
             // 🔹 Enviar mensaje de confirmación de reserva
             await whatsapp.sendMessage(
-                numeroFormateado,`🍽️ *Reserva Confirmada*\n👤 *Nombre:* ${name}\n📅 *Fecha:* ${date}\n⏰ *Hora:* ${hour}\n👥 *Personas:* ${guests}\n📝 *Nota:* ${note}\n\n¡Gracias por reservar con nosotros! 🎉. Pon 'confirmar' en minusculas`
+                numeroFormateado,`🍽️ *Reserva Confirmada*\n👤 *Nombre:* ${name}\n📅 *Fecha:* ${date}\n⏰ *Hora:* ${hour}\n👥 *Personas:* ${guests}\n📝 *Nota:* ${note}\n\n¡Gracias por reservar con nosotros! 🎉. Pon 'confirmar' para enviarte los datos bancarios`
             );
             console.log("✅ Mensaje enviado a:", numeroFormateado);
         } else {

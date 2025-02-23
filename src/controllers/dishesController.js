@@ -1,7 +1,7 @@
 import { dishesModel } from "../models/dishesModels.js";
 
-// Obtener todos los platos de un menú específico
 const getAllDishes = async (req, res) => {
+  console.log("Menu ID recibido:", req.params.menuId);  // Verifica que el menuId es correcto
   try {
     const dishes = await dishesModel.findAllDishes(req.params.menuId);
     res.json(dishes);
@@ -10,6 +10,8 @@ const getAllDishes = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener los platos' });
   }
 };
+
+
 
 // Obtener un plato específico por ID
 const getDishById = async (req, res) => {
