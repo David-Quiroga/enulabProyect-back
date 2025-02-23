@@ -14,9 +14,9 @@ const findCommentsById = async (restaurantId, commentId) => {
 
 
 //Crear un nuevo comentario en un restaurante
-const createComment = async (restaurantId, rating, date, content) => {
-    const query = 'INSERT INTO comment (restaurant_id, rating, date, content) VALUES($1, $2, $3, $4) RETURNING *'
-    const { rows } = await pool.query(query, [restaurantId, rating, date, content])
+const createComment = async (restaurantId, rating, date, content, name) => {
+    const query = 'INSERT INTO comment (restaurant_id, rating, date, content, name) VALUES($1, $2, $3, $4, $5) RETURNING *'
+    const { rows } = await pool.query(query, [restaurantId, rating, date, content, name])
     return rows[0]
 }
 

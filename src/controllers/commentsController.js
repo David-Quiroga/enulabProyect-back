@@ -29,9 +29,12 @@ const getCommentById = async (req, res) => {
 
 
 const createComment = async (req, res) => {
-    const {rating, date, content} = req.body
+    const {rating, date, content, name} = req.body
+    if (!rating || !date || !content || !name ) {
+        return res.status(400).json({ message: 'Todos los campos son requeridos.' });
+    }
     try {
-        const newComment = await commentModel.createComment(req.params.restaurantId, rating, date, content)
+        const newComment = await commentModel.createComment(req.params.restaurantId, rating, date, content, name)
         res.status(201).json(newComment)
     } catch (error) {
         console.log(error)
